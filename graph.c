@@ -12,7 +12,7 @@
 #define MAX 1000000
 
 void createNewGraph(newNode *head);
-void insert_node(newNode *head);
+void add_node(newNode *head);
 void delete_node(newNode *head);
 void delete_graph(newNode *head);
 void shortsPath(newNode head);
@@ -34,7 +34,7 @@ void choice(char answer, newNode *graph)
             break;
 
         case 'B':
-            insert_node(graph);
+            add_node(graph);
             break;
 
         case 'D':
@@ -57,29 +57,32 @@ void choice(char answer, newNode *graph)
     }
 }
 
-void createNewGraph(newNode *head)
+void createNewGraph(newNode *h)
 {
     int numOfVertices = 0;
     scanf("%d", &numOfVertices);
     for (int i = 0; i < numOfVertices; i++)
     {
-        insertLastN(i, head);
+        insertLastN(i, h);
     }
     char p = 0;
-    while (scanf(" %c", &p) != 0)
+    int ansOfp = scanf(" %c", &p);
+    while (ansOfp != 0)
     {
         if (p == 'n')
         {
             int src = -1;
             scanf("%d", &src);
             int dest, weight;
-            while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
+            int destAns = scanf("%d", &dest);
+            int weightAns = scanf("%d", &weight);
+            while (destAns != 0 && weightAns != 0)
             {
                 if (isalpha(dest))
                 {
                     break;
                 }
-                addEdge(src, dest, weight, head);
+                addEdge(src, dest, weight, h);
             }
         }
         else
@@ -87,42 +90,53 @@ void createNewGraph(newNode *head)
             break;
         }
     }
-    choice(p, head);
+    choice(p, h);
 }
 
-void insert_node(newNode *head)
+void add_node(newNode *h)
 {
     int index;
     scanf("%d", &index);
     int dest, weight;
-    newNode newNode1 = getNode(head, index);
+    newNode newNode1 = getNode(h, index);
     if (newNode1 == NULL)
     {
-        insertLastN(index, head);
-        while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
+        insertLastN(index, h);
+        int destAns = scanf("%d", &dest);
+        int weightAns = scanf("%d", &weight);
+        while (weightAns  != 0 && destAns  != 0)
         {
             if (isalpha(dest))
             {
                 break;
             }
-            addEdge(index, dest, weight, head);
+            else if (!(isalpha(dest))){
+                addEdge(index, dest, weight, h);
+            }
+
         }
     }
     else
     {
-        pedge *pe = &(newNode1->edges);
-        freeEdges(pe);
+        pedge *pedge1 = &(newNode1->edges);
+        freeEdges(pedge1);
         newNode1->edges = NULL;
-        while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
+
+        int destAns = scanf("%d", &dest);
+        int weightAns = scanf("%d", &weight);
+
+        while (weightAns  != 0 && destAns  != 0)
         {
             if (isalpha(dest))
             {
                 break;
             }
-            addEdge(index, dest, weight, head);
+            else if (!(isalpha(dest))){
+                addEdge(index, dest, weight, h);
+            }
         }
     }
-    choice(getchar(), head);
+    choice(getchar(), h);
 }
 
 void delete_graph(newNode *h)
@@ -134,11 +148,11 @@ void delete_graph(newNode *h)
     newNode t = *h;
     while (t)
     {
-        pedge nodeEdges = t->edges;
-        while (nodeEdges)
+        pedge newNodeOfEdges = t->edges;
+        while (newNodeOfEdges)
         {
-            pedge newEdge = nodeEdges;
-            nodeEdges = nodeEdges->next;
+            pedge newEdge = newNodeOfEdges;
+            newNodeOfEdges = newNodeOfEdges->next;
             free(newEdge);
         }
         newNode node = t;
