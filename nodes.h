@@ -9,12 +9,12 @@ typedef struct node_
     int id;
     pedge edges;
     struct node_ *next;
-} node, *newNode;
+} node, *pnode;
 
 node *newNode1(int);
-void insertLastN(int, newNode *);
+void insertLastN(int, pnode *);
 void deleteFromListN(int, node **);
-newNode getNode (newNode *, int);
-void deleteGraph(newNode *);
+pnode getNode (pnode *, int);
+void deleteGraph(pnode *);
 
 #endif

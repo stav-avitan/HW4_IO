@@ -1,21 +1,21 @@
 #ifndef edgesh
 #define edgesh
 
-typedef struct node_ node, *newNode;
+typedef struct node_ node, *pnode;
 
 // Edge struct
 typedef struct edge_
 {
     int weight;
-    newNode endpoint;
+    pnode endpoint;
     struct edge_ *next;
 } edge, *pedge;
 
 
-void addEdge(int , int , int , newNode *);
-void insertLastE(newNode, int , newNode *);
-void deleteFromListE(int, pedge *, newNode *);
+void addEdge(int , int , int , pnode *);
+void insertLastE(pnode, int , pnode *);
+void deleteFromListE(int, pedge *, pnode *);
 void freeEdges(pedge *);
-edge *newEdge(int , newNode);
+edge *newEdge(int , pnode);
 
 #endif

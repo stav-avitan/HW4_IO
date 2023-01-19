@@ -7,13 +7,13 @@
 #include "edges.h"
 #include "graph.h"
 
-void addEdge(int , int , int , newNode *);
-void insertLastE(newNode, int , newNode *);
-void deleteFromListE(int, pedge *, newNode *);
+void addEdge(int , int , int , pnode *);
+void insertLastE(pnode, int , pnode *);
+void deleteFromListE(int, pedge *, pnode *);
 void freeEdges(pedge *);
-edge *newEdge(int , newNode);
+edge *newEdge(int , pnode);
 
-edge *newEdge(int weight, newNode dest)
+edge *newEdge(int weight, pnode dest)
 {
     edge *e = (edge *)malloc(sizeof(edge));
     if (e == NULL)
@@ -26,7 +26,7 @@ edge *newEdge(int weight, newNode dest)
     return e;
 }
 
-void insertLastE(newNode dest, int w, newNode *head)
+void insertLastE(pnode dest, int w, pnode *head)
 {
     pedge e = (*head)->edges;
     pedge ed = newEdge(w, dest);
@@ -44,11 +44,11 @@ void insertLastE(newNode dest, int w, newNode *head)
     }
 }
 
-void addEdge(int src, int dest, int w, newNode *head)
+void addEdge(int src, int dest, int w, pnode *head)
 {
-    newNode curr = *head;
-    newNode nsrc = NULL;
-    newNode ndest = NULL;
+    pnode curr = *head;
+    pnode nsrc = NULL;
+    pnode ndest = NULL;
 
     while (curr)
     {
@@ -71,7 +71,7 @@ void addEdge(int src, int dest, int w, newNode *head)
     insertLastE(ndest, w, &nsrc);
 }
 
-void deleteFromListE(int id, pedge *h, newNode *n)
+void deleteFromListE(int id, pedge *h, pnode *n)
 {
     if (!*h)
         return;

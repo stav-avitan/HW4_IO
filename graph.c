@@ -10,22 +10,21 @@
 #include "edges.h"
 
 #define MAX 1000000
-
-void createNewGraph(newNode *h);
-void addVertice(newNode *h);
-void delete_node(newNode *h);
-void delete_graph(newNode *h);
-void shortsPath(newNode h);
-int shortsPathWithMat(newNode h, int, int);
+void createNewGraph(pnode *h);
+void addVertice(pnode *h);
+void deleteVertice (pnode *h);
+void delete_graph(pnode *h);
+void shortsPath(pnode h);
+int shortsPathWithMat(pnode h, int, int);
 int min(int, int);
-void TisTheShortestPath(newNode h);
-void allChoices(newNode, int *, int, int , int *, int *);
-int calc(newNode, int[], int);
+void TisTheShortestPath(pnode h);
+void allChoices(pnode, int *, int, int , int *, int *);
+int calc(pnode, int[], int);
 void swap(int *, int *);
 int numOfWays(int);
 int findMinimum(int[], int);
 
-void option (char answer, newNode *graph)
+void option (char answer, pnode *graph)
 {
     switch (answer)
     {
@@ -38,7 +37,7 @@ void option (char answer, newNode *graph)
             break;
 
         case 'D':
-            delete_node(graph);
+            deleteVertice (graph);
             break;
 
         case 'S':
@@ -57,7 +56,7 @@ void option (char answer, newNode *graph)
     }
 }
 
-void createNewGraph(newNode *h)
+void createNewGraph(pnode *h)
 {
     int numOfVertices = 0;
     scanf("%d", &numOfVertices);
@@ -93,12 +92,12 @@ void createNewGraph(newNode *h)
     option(p, h);
 }
 
-void addVertice(newNode *h)
+void addVertice(pnode *h)
 {
     int index;
     scanf("%d", &index);
     int dest, weight;
-    newNode newNode1 = getNode(h, index);
+    pnode newNode1 = getNode(h, index);
     if (newNode1 == NULL)
     {
         insertLastN(index, h);
@@ -139,13 +138,13 @@ void addVertice(newNode *h)
     option(getchar(), h);
 }
 
-void delete_graph(newNode* h)
+void delete_graph(pnode* h)
 {
     if (!h)
     {
         return;
     }
-    newNode t = *h;
+    pnode t = *h;
     while (t)
     {
         pedge newNodeOfEdges = t->edges;
@@ -155,19 +154,19 @@ void delete_graph(newNode* h)
             newNodeOfEdges = newNodeOfEdges->next;
             free(newEdge);
         }
-        newNode node = t;
+        pnode node = t;
         t = t->next;
         free(node);
     }
     free(t);
 }
 
-void deleteVertice(newNode *h)
+void deleteVertice(pnode *h)
 {
     int index;
     scanf("%d", &index);
 
-    newNode t = *h;
+    pnode t = *h;
     while (t)
     {
         pedge *tempPedge = &(t->edges);
@@ -178,7 +177,7 @@ void deleteVertice(newNode *h)
     option (getchar(), h);
 }
 
-void shortsPath(newNode h)
+void shortsPath(pnode h)
 {
     int src = 0, dst = 0;
     scanf("%d", &src);
@@ -186,13 +185,13 @@ void shortsPath(newNode h)
     printf("Dijsktra shortest path: %d \n", shortsPathWithMat(h, src, dst));
 }
 
-int shortsPathWithMat(newNode h, int source, int target)
+int shortsPathWithMat(pnode h, int source, int target)
 {
     if (!h)
     {
         return -1;
     }
-    newNode current = h;
+    pnode current = h;
     int largestNode = 0;
     while (current)
     {
@@ -273,7 +272,7 @@ int min(int x, int y) {
     }
 }
 
-void TisTheShortestPath(newNode h)
+void TisTheShortestPath(pnode h)
 {
     int numOfVertices;
     scanf("%d", &numOfVertices);
@@ -301,7 +300,7 @@ void TisTheShortestPath(newNode h)
     }
 }
 
-int calc(newNode h, int vertices[], int size)
+int calc(pnode h, int vertices[], int size)
 {
     int distanceBetweenVertices = 0;
     for (size_t i = 0; i < size - 1; i++)
@@ -324,7 +323,7 @@ void swap(int *x, int *y)
     *y = t;
 }
 
-void allChoices(newNode h, int *vertices, int start, int end, int *perm, int *ind)
+void allChoices(pnode h, int *vertices, int start, int end, int *perm, int *ind)
 {
     if (start == end)
     {

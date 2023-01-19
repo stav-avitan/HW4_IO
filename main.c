@@ -7,7 +7,7 @@
 int main()
 {
     char answer;
-    newNode* graph = NULL;
+    pnode* graph = NULL;
     while (scanf(" %c", &answer) != EOF){
         option(answer, graph);
     }

@@ -8,14 +8,14 @@
 #include "graph.h"
 
 node *newNode1(int);
-void insertLastN(int, newNode *);
+void insertLastN(int, pnode  *);
 void deleteFromListN(int, node **);
-newNode getNode (newNode *, int);
-void deleteGraph(newNode *);
+pnode  getNode (pnode *, int);
+void deleteGraph(pnode *);
 
 node *newNode1(int id)
 {
-    newNode p = (newNode)malloc(sizeof(node));
+    pnode p = (pnode)malloc(sizeof(node));
     if (p == NULL)
     {
         return NULL;
@@ -26,9 +26,9 @@ node *newNode1(int id)
     return p;
 }
 
-newNode getNode(newNode *head, int id)
+pnode getNode(pnode *head, int id)
 {
-    newNode h = *head;
+    pnode h = *head;
     while (h)
     {
         if (h->id == id)
@@ -40,9 +40,9 @@ newNode getNode(newNode *head, int id)
     return NULL;
 }
 
-void insertLastN(int id, newNode *head)
+void insertLastN(int id, pnode *head)
 {
-    newNode *p = head;
+    pnode *p = head;
     while (*p)
     {
         p = &((*p)->next);
@@ -50,10 +50,10 @@ void insertLastN(int id, newNode *head)
     *p = newNode1(id);
 }
 
-void deleteFromListN(int id, newNode *head)
+void deleteFromListN(int id, pnode *head)
 {
-    newNode h = *head;
-    newNode p = NULL;
+    pnode h = *head;
+    pnode p = NULL;
     if(h->id != id){
         while (h->next->id != id)
         {
