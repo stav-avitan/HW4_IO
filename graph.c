@@ -11,30 +11,30 @@
 
 #define MAX 1000000
 
-void createNewGraph(newNode *head);
-void add_node(newNode *head);
-void delete_node(newNode *head);
-void delete_graph(newNode *head);
-void shortsPath(newNode head);
-int shortsPathFun(newNode head, int, int);
+void createNewGraph(newNode *h);
+void addVertice(newNode *h);
+void delete_node(newNode *h);
+void delete_graph(newNode *h);
+void shortsPath(newNode h);
+int shortsPathWithMat(newNode h, int, int);
 int min(int, int);
-void TheShortestPath(newNode head);
-void permutation(newNode, int *, int, int, int *, int *);
-int calcArray(newNode, int[], int);
+void TisTheShortestPath(newNode h);
+void allChoices(newNode, int *, int, int , int *, int *);
+int calc(newNode, int[], int);
 void swap(int *, int *);
-int factorial(int);
-int find_minimum(int[], int);
+int numOfWays(int);
+int findMinimum(int[], int);
 
-void choice(char answer, newNode *graph)
+void option (char answer, newNode *graph)
 {
     switch (answer)
     {
         case 'A':
-            build_graph(graph);
+            createNewGraph(graph);
             break;
 
         case 'B':
-            add_node(graph);
+            addVertice(graph);
             break;
 
         case 'D':
@@ -46,7 +46,7 @@ void choice(char answer, newNode *graph)
             break;
 
         case 'T':
-            TheShortestPath(*graph);
+            TisTheShortestPath(*graph);
             break;
 
         default:
@@ -90,10 +90,10 @@ void createNewGraph(newNode *h)
             break;
         }
     }
-    choice(p, h);
+    option(p, h);
 }
 
-void add_node(newNode *h)
+void addVertice(newNode *h)
 {
     int index;
     scanf("%d", &index);
@@ -136,12 +136,12 @@ void add_node(newNode *h)
             }
         }
     }
-    choice(getchar(), h);
+    option(getchar(), h);
 }
 
-void delete_graph(newNode *h)
+void delete_graph(newNode* h)
 {
-    if (h!= NULL)
+    if (!h)
     {
         return;
     }
@@ -162,192 +162,202 @@ void delete_graph(newNode *h)
     free(t);
 }
 
-void delete_node(newNode *head)
+void deleteVertice(newNode *h)
 {
-    int ind;
-    scanf("%d", &ind);
+    int index;
+    scanf("%d", &index);
 
-    newNode temp = *head;
-    while (temp)
+    newNode t = *h;
+    while (t)
     {
-        pedge *tempEdge = &(temp->edges);
-        deleteFromListE(ind, tempEdge, head);
-        temp = temp->next;
+        pedge *tempPedge = &(t->edges);
+        deleteFromListE(index, tempPedge, h);
+        t = t->next;
     }
-    deleteFromListN(ind, head);
-    choice(getchar(), head);
+    deleteFromListN(index, h);
+    option (getchar(), h);
 }
 
-void shortsPath(newNode head)
+void shortsPath(newNode h)
 {
     int src = 0, dst = 0;
     scanf("%d", &src);
     scanf("%d", &dst);
-    printf("Dijsktra shortest path: %d \n", shortsPathFun(head, src, dst));
+    printf("Dijsktra shortest path: %d \n", shortsPathWithMat(h, src, dst));
 }
 
-int shortsPathFun(newNode head, int source, int target)
+int shortsPathWithMat(newNode h, int source, int target)
 {
-    if (!head)
+    if (!h)
     {
         return -1;
     }
-    newNode curr = head;
-    int N = 0;
-    while (curr)
+    newNode current = h;
+    int largestNode = 0;
+    while (current)
     {
-        if (N < curr->id)
+        if (largestNode < current->id)
         {
-            N = curr->id;
+            largestNode = current->id;
         }
-        curr = curr->next;
+        current = current->next;
     }
-    N += 1;
-    int mat[N][N];
+    largestNode += 1;
+    int matrix[largestNode][largestNode];
 
-    for (int k = 0; k < N; k++)
+    for (int k = 0; k < largestNode; k++)
     {
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < largestNode; i++)
         {
-            mat[k][i] = MAX;
+            matrix[k][i] = MAX;
         }
     }
 
-    curr = head;
-    while (curr)
+    current = h;
+    while (current)
     {
-        pedge ed = curr->edges;
+        pedge ed = current->edges;
         while (ed)
         {
-            mat[curr->id][ed->endpoint->id] = ed->weight;
+            matrix[current->id][ed->endpoint->id] = ed->weight;
             ed = ed->next;
         }
-        curr = curr->next;
+        current = current->next;
     }
 
-    for (int k = 0; k < N; k++)
+    for (int k = 0; k < largestNode; k++)
     {
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < largestNode; i++)
         {
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < largestNode; j++)
             {
                 if (i == j)
                 {
-                    mat[i][i] = 0;
+                    matrix[i][i] = 0;
                 }
-                else if (i == k || j == k)
+                else if (j == k || i == k)
                 {
-                    mat[i][j] = mat[i][j];
+                    matrix[i][j] = matrix[i][j];
                 }
                 else
                 {
-                    int val = mat[i][k] + mat[k][j];
-                    if (mat[i][k] == 0 || mat[k][j] == 0)
+                    int val = matrix[i][k] + matrix[k][j];
+                    if (matrix[i][k] == 0 || matrix[k][j] == 0)
                     {
                         val = 0;
                     }
-                    mat[i][j] = min(mat[i][j], val);
+                    matrix[i][j] = min(matrix[i][j], val);
                 }
             }
         }
     }
-    if (mat[source][target] == MAX)
+    if (matrix[source][target] == MAX)
     {
         return -1;
     }
-    return mat[source][target];
+    return matrix[source][target];
 }
 
-int min(int a, int b)
-{
-    return (a == 0) ? b : (b == 0) ? a
-                                   : (a < b)    ? a
-                                                : b;
+int min(int x, int y) {
+    if (x == 0) {
+        return y;
+    } else {
+        if (y == 0) {
+            return x;
+        } else {
+            if (x < y) {
+                return x;
+            }
+            return y;
+        }
+    }
 }
 
-void TheShortestPath(newNode head)
+void TisTheShortestPath(newNode h)
 {
-    int count;
-    scanf("%d", &count);
-    if (count == 0)
+    int numOfVertices;
+    scanf("%d", &numOfVertices);
+    if (numOfVertices == 0)
     {
         return;
     }
-    int cities[count];
-    for (size_t i = 0; i < count; i++)
+    int vertices[numOfVertices];
+    for (size_t i = 0; i < numOfVertices; i++)
     {
-        scanf("%d", &cities[i]);
+        scanf("%d", &vertices[i]);
     }
-    int fac = factorial(count);
-    int perm[fac];
-    int temp = 0;
-    permutation(head, cities, 0, count - 1, perm, &temp);
-    int ind = find_minimum(perm, fac);
-    if (perm[ind] == MAX)
+    int ways = numOfWays(numOfVertices);
+    int newVertices[ways];
+    int t = 0;
+    allChoices (h, vertices, 0, numOfVertices - 1, newVertices, &t);
+    int newMinIndex = findMinimum(newVertices, ways);
+    if (newVertices[newMinIndex] == MAX)
     {
         printf("TSP shortest path: %d \n", -1);
     }
     else
     {
-        printf("TSP shortest path: %d \n", perm[ind]);
+        printf("TSP shortest path: %d \n", newVertices[newMinIndex]);
     }
 }
 
-int calcArray(newNode head, int cities[], int size)
+int calc(newNode h, int vertices[], int size)
 {
-    int distance = 0;
+    int distanceBetweenVertices = 0;
     for (size_t i = 0; i < size - 1; i++)
     {
-        int path = shortsPathFun(head, cities[i], cities[i + 1]);
+        int path = shortsPathWithMat(h, vertices[i], vertices[i + 1]);
         if (path == -1)
         {
             return MAX;
         }
-        distance += path;
+        distanceBetweenVertices += path;
     }
-    return distance;
+    return distanceBetweenVertices;
 }
 
-void swap(int *a, int *b)
+void swap(int *x, int *y)
 {
-    int temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
+    int t;
+    t = *x;
+    *x = *y;
+    *y = t;
 }
 
-void permutation(newNode head, int *cities, int start, int end, int *perm, int *ind)
+void allChoices(newNode h, int *vertices, int start, int end, int *perm, int *ind)
 {
     if (start == end)
     {
-        perm[(*ind)++] = calcArray(head, cities, end + 1);
+        perm[(*ind)++] = calc(h, vertices, end + 1);
         return;
     }
     int i;
     for (i = start; i <= end; i++)
     {
-        swap((cities + i), (cities + start));
-        permutation(head, cities, start + 1, end, perm, ind);
-        swap((cities + i), (cities + start));
+        swap((vertices + i), (vertices + start));
+        allChoices(h, vertices, start + 1, end, perm, ind);
+        swap((vertices + i), (vertices + start));
     }
 }
 
-int find_minimum(int arr[], int n)
+int findMinimum(int arr[], int size)
 {
-    int index = 0;
-    for (int i = 1; i < n; i++)
-        if (arr[i] < arr[index])
+    int minIndex = 0;
+    for (int i = 1; i < size; i++)
+        if (arr[i] < arr[minIndex])
         {
-            index = i;
+            minIndex = i;
         }
-    return index;
+    return minIndex;
 }
 
-int factorial(int num)
+int numOfWays(int vertices)
 {
-    if (num == 0)
-        return 1;
-    if (num < 0)
+    if (vertices < 0){
         return 0;
-    return factorial(num - 1) * num;
+    }
+    if (vertices == 0){
+        return 1;
+    }
+    return numOfWays (vertices - 1) * vertices;
 }

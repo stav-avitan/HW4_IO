@@ -1,30 +1,24 @@
-CFLAGS = -g -Wall
-OBJ = graph.o nodes.o edges.o
-CC = gcc
+CC=gcc
+FLAGS = -Wall -g
 
-all: output functions
+all: output
 
-graph.o: graph.c nodes.h graph.h edges.h
-	$(CC) -c $(CFLAGS) graph.c
+output: main.o graph.o nodes.o edges.o
+	$(CC) $(FLAGS) $^ -o $@
 
-nodes.o: nodes.c nodes.h graph.h edges.h
-	$(CC) -c $(CFLAGS) nodes.c
+main.o: main.c
+	$(CC) $(FLAGS) -c main.c
 
-edges.o: edges.c nodes.h graph.h edges.h
-	$(CC) -c $(CFLAGS) edges.c
+graph.o: graph.c graph.h
+	$(CC) $(FLAGS) -c graph.c
 
-libfunctions.so: $(OBJ)
-	$(CC) -shared -fPIC -o libfunctions.so $(OBJ)
+nodes.o: nodes.c nodes.h
+	$(CC) $(FLAGS) -c nodes.c
 
-functions: libfunctions.so
+edges.o: edges.c edges.h
+	$(CC) $(FLAGS) -c edges.c
 
-main.o: main.c nodes.h graph.h edges.h
-	$(CC) -c $(CFLAGS) main.c
 
-output: main.o libfunctions.so
-	$(CC) $(CFLAGS) -o graph main.o ./libfunctions.so
-
-.PHONY: all clean functions output
-
+.PHONY: all clean
 clean:
-	rm -f *.o *.so $(OUTPUT)
+	rm -f *.o output

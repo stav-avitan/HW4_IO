@@ -7,10 +7,10 @@
 int main()
 {
     char answer;
-    newNode graph = NULL;
+    newNode* graph = NULL;
     while (scanf(" %c", &answer) != EOF){
-        choice(answer, &graph);
+        option(answer, graph);
     }
-    delete_graph(&graph);
+    delete_graph(graph);
     return 0;
 }

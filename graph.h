@@ -4,22 +4,21 @@
 #include "nodes.h"
 #include "edges.h"
 
-
-void build_graph(newNode *head);
-void insert_node(newNode *head);
-void delete_node(newNode *head);
-void delete_graph(newNode *head);
-void shortsPath(newNode head);
-int shortsPathFun(newNode head, int, int);
+void delete_graph(newNode *h);
+void createNewGraph(newNode *h);
+void addVertice(newNode *h);
+void delete_node(newNode *h);
+void shortsPath(newNode h);
+int shortsPathWithMat(newNode h, int, int);
 int min(int, int);
-void TheShortestPath(newNode head);
-void permutation(newNode, int *, int, int, int*, int*);
-int calcArray(newNode, int[], int);
+void TisTheShortestPath(newNode h);
+void allChoices(newNode, int *, int, int , int *, int *);
+int calc(newNode, int[], int);
 void swap(int *, int *);
-int factorial(int);
-int find_minimum(int[], int);
+int numOfWays(int);
+int findMinimum(int[], int);
 
-void choice(char, newNode *head);
+void option (char, newNode *head);
 
 
 #endif
